@@ -20,6 +20,7 @@ import peaksooft.repository.UserRepository;
 import peaksooft.services.BasketService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +55,7 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public BasketResponse allProductsInBasket(BasketRequest basketRequest, int currentPage, int size) {
+    public BasketResponse allProductsInBasket(int currentPage, int size) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userEmail = authentication.getName();
             User user = userRepository.findUserByEmail(userEmail).orElseThrow(() -> new NotFoundException("User with email: " + userEmail + " not found"));
@@ -89,8 +90,10 @@ public class BasketServiceImpl implements BasketService {
     private void saveOrDelete(String word, Basket basket, Product product){
         if (word.equals("delete")){
             basket.getProducts().remove(product);
+            product.getBaskets().remove(basket);
         }else if(word.equals("save")){
             basket.getProducts().add(product);
+            product.setBaskets(Collections.singletonList(basket));
         }
     }
 

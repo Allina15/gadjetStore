@@ -24,8 +24,8 @@ public class BasketApi {
     }
 
     @GetMapping
-    public BasketResponse productsInBasket(@RequestParam  int currentPage, @RequestParam int size, @RequestBody BasketRequest basketRequest){
-        return basketService.allProductsInBasket(basketRequest,currentPage,size);
+    public BasketResponse productsInBasket(@RequestParam  int currentPage, @RequestParam int size){
+        return basketService.allProductsInBasket(currentPage,size);
     }
 
     @DeleteMapping

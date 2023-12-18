@@ -24,8 +24,6 @@ public class Product {
     private String name;
     private double price;
     @ElementCollection
-//    @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "product_id"))
-//    @Column(name = "image")
     private List<String> images;
     private String characteristic;
     private boolean isFavorite;
@@ -37,7 +35,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Comment>comments;
-    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "products")
     @JsonIgnore
     private List<Basket>baskets;
 

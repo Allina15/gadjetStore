@@ -7,7 +7,7 @@ import peaksooft.dto.SimpleResponse;
 public interface BasketService {
     BasketResponse addToBasket(BasketRequest basketRequest);
 
-    BasketResponse allProductsInBasket(BasketRequest basketRequest, int currentPage, int size);
+    BasketResponse allProductsInBasket(int currentPage, int size);
 
     SimpleResponse clearBasket();
 }

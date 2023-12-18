@@ -21,7 +21,7 @@ public class Basket {
     @ManyToMany
     @JsonIgnore
     private List<Product>products;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne
     @JsonIgnore
     private User user;
 

@@ -22,7 +22,6 @@ import peaksooft.repository.UserRepository;
 import peaksooft.services.ProductService;
 
 import java.util.Collections;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -59,9 +58,12 @@ public class ProductServiceImpl implements ProductService {
         User user = userRepository.findUserByEmail(email).orElseThrow(() -> new NotFoundException("not found"));
         if (user.getRole().name().equals("ADMIN")) {
             Product product = productRepository.findById(id).orElseThrow(()->new NotFoundException("product with id "+id+" not found"));
-            Basket basket = basketRepository.findBasketByProductsIn(Collections.singletonList(product));
-            productRepository.delete(product);
-            basketRepository.delete(basket);
+            Basket basket = basketRepository.findBasketByProduct(product);
+            if (basket != null) {
+                basket.getProducts().remove(product);
+            }else {
+                productRepository.delete(product);
+            }
             return new SimpleResponse(HttpStatus.OK, "product deleted");
         }else{
          throw new BadCredentialsException("Access denied");

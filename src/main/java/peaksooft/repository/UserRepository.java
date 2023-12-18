@@ -8,6 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 import peaksooft.dto.UserResponse;
 import peaksooft.enums.Role;
+import peaksooft.models.Basket;
 import peaksooft.models.User;
 
 import java.util.Optional;
