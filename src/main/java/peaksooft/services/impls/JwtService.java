@@ -1,0 +1,33 @@
+package peaksooft.services.impls;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import java.time.ZonedDateTime;
+import java.util.Date;
+
+@Component
+@Slf4j
+public class JwtService {
+    @Value("${spring.secret_key}")
+    private String SECRET_KEY;
+
+   public String generateToken(UserDetails userDetails){
+       return JWT.create().withClaim("username", userDetails.getUsername())
+               .withIssuedAt(new Date())
+               .withExpiresAt(Date.from(ZonedDateTime.now().plusMinutes(60).toInstant()))
+               .sign(Algorithm.HMAC256(SECRET_KEY));
+   }
+
+   public String validateToken(String token){
+       JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(SECRET_KEY)).build();
+       DecodedJWT verify = jwtVerifier.verify(token);
+       return verify.getClaim("username").asString();
+   }
+}
